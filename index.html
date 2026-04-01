@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackburn Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #f7f4ef; --cream-dark: #ede9e1; --cream-border: #e0dbd0;
+    --forest: #1e3d2f; --forest-mid: #2d5c46; --forest-light: #e8f0eb; --forest-lighter: #f0f6f2;
+    --text: #1a1a18; --text-muted: #6b6960; --text-faint: #a8a49c;
+    --red: #c0392b; --red-bg: #fdf0ef; --amber: #b7621a; --amber-bg: #fdf6ee;
+    --green: #1e6b3a; --green-bg: #edf5f0; --blue: #1a4f7a; --blue-bg: #eef4fa;
+    --radius: 10px; --radius-lg: 14px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text); min-height: 100vh; padding: 2.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0; padding-bottom: 1.5rem; border-bottom: 1px solid var(--cream-border); }
+  .header-left { display: flex; align-items: flex-end; gap: 1.5rem; }
+  .brand h1 { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; letter-spacing: 0.06em; color: var(--forest); line-height: 1; text-transform: uppercase; }
+  .brand p { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--text-faint); text-transform: uppercase; margin-top: 5px; }
+  .divider-v { width: 1px; height: 36px; background: var(--cream-border); }
+  .date-block .day { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 300; color: var(--text-muted); letter-spacing: 0.04em; }
+  .date-block .full-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-faint); margin-top: 3px; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .live-badge { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--green); background: var(--green-bg); padding: 4px 10px; border-radius: 20px; border: 0.5px solid rgba(30,107,58,0.2); letter-spacing: 0.04em; }
+  .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); animation: pulse 2.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .last-updated { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); }
+  .refresh-btn { background: transparent; border: 0.5px solid var(--cream-border); color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 10px; padding: 4px 12px; border-radius: 20px; cursor: pointer; letter-spacing: 0.04em; transition: border-color 0.2s, color 0.2s; }
+  .refresh-btn:hover { border-color: var(--forest); color: var(--forest); }
+  .tab-bar { display: flex; gap: 0; margin-top: 0; border-bottom: 1px solid var(--cream-border); }
+  .tab-btn { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); background: transparent; border: none; padding: 1rem 1.5rem 0.875rem; cursor: pointer; position: relative; transition: color 0.2s; }
+  .tab-btn:hover { color: var(--text-muted); }
+  .tab-btn.active { color: var(--forest); }
+  .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--forest); border-radius: 2px 2px 0 0; }
+  .tab-view { display: none; padding-top: 2rem; }
+  .tab-view.active { display: block; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+  .card { background: #fff; border: 0.5px solid var(--cream-border); border-radius: var(--radius-lg); padding: 1.375rem 1.5rem; transition: border-color 0.2s; }
+  .card:hover { border-color: #c8c2b6; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; }
+  .card-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; }
+  .card-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); }
+  .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-bottom: 1.25rem; }
+  .metric-card { background: #fff; border: 0.5px solid var(--cream-border); border-radius: var(--radius-lg); padding: 1.5rem 1.625rem; transition: border-color 0.2s; cursor: pointer; }
+  .metric-card:hover { border-color: var(--forest); }
+  .metric-card.green-tint { background: var(--forest-lighter); border-color: rgba(30,61,47,0.12); }
+  .metric-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .metric-card.green-tint .metric-label { color: rgba(30,61,47,0.45); }
+  .metric-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; color: var(--text); line-height: 1; letter-spacing: -0.01em; }
+  .metric-card.green-tint .metric-value { color: var(--forest); }
+  .metric-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); margin-top: 8px; }
+  .metric-card.green-tint .metric-sub { color: rgba(30,61,47,0.45); }
+  .progress-wrap { margin-top: 12px; }
+  .progress-bar-bg { height: 3px; background: var(--cream-border); border-radius: 2px; }
+  .progress-bar-fill { height: 3px; border-radius: 2px; background: var(--forest); transition: width 0.6s ease; }
+  .metric-card.green-tint .progress-bar-bg { background: rgba(30,61,47,0.1); }
+  .metric-card.green-tint .progress-bar-fill { background: var(--forest); }
+  .progress-label { display: flex; justify-content: space-between; margin-top: 5px; }
+  .progress-label span { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-faint); }
+  .fico-link { display: block; text-decoration: none; border: 0.5px solid rgba(30,61,47,0.15); background: var(--forest-lighter); }
+  .fico-link:hover { border-color: var(--forest); background: #e4efea; }
+  .fico-link-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .fico-link-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--forest); letter-spacing: 0.06em; }
+  .fico-arrow { font-size: 14px; color: var(--forest); opacity: 0.6; }
+  .todo-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid var(--cream-border); }
+  .todo-item:last-child { border-bottom: none; }
+  .priority-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .p-4 { background: var(--red); } .p-3 { background: var(--amber); } .p-2 { background: #4a7fb5; } .p-1 { background: var(--text-faint); }
+  .todo-text { font-size: 13.5px; color: var(--text); line-height: 1.4; }
+  .todo-meta { font-size: 11px; color: var(--text-faint); margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .todo-meta.overdue { color: var(--red); }
+  .email-item { padding: 10px 0; border-bottom: 0.5px solid var(--cream-border); }
+  .email-item:last-child { border-bottom: none; }
+  .email-from { font-size: 13px; font-weight: 500; color: var(--text); }
+  .email-subject { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .email-summary { font-size: 12px; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+  .email-tags { display: flex; gap: 5px; margin-top: 6px; flex-wrap: wrap; }
+  .tag { font-family: 'DM Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 20px; border: 0.5px solid; letter-spacing: 0.02em; }
+  .tag-you { color: var(--blue); border-color: rgba(26,79,122,0.25); background: var(--blue-bg); }
+  .tag-action { color: var(--amber); border-color: rgba(183,98,26,0.25); background: var(--amber-bg); }
+  .tag-fyi { color: var(--text-faint); border-color: var(--cream-border); background: transparent; }
+  .tag-urgent { color: var(--red); border-color: rgba(192,57,43,0.25); background: var(--red-bg); }
+  .cal-item { display: flex; gap: 12px; padding: 9px 0; border-bottom: 0.5px solid var(--cream-border); align-items: flex-start; }
+  .cal-item:last-child { border-bottom: none; }
+  .cal-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-faint); min-width: 48px; margin-top: 2px; }
+  .cal-accent { width: 2px; border-radius: 2px; flex-shrink: 0; align-self: stretch; min-height: 32px; }
+  .cal-title { font-size: 13.5px; color: var(--text); }
+  .cal-sub { font-size: 11px; color: var(--text-faint); margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .accent-strip { background: var(--forest-lighter); border: 0.5px solid rgba(30,61,47,0.1); border-radius: var(--radius-lg); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .accent-strip-left { display: flex; align-items: center; gap: 10px; }
+  .accent-strip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--forest); opacity: 0.4; }
+  .accent-strip-text { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--forest); letter-spacing: 0.06em; }
+  .accent-strip-value { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--forest); }
+  .edit-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26,26,24,0.4); display: none; align-items: center; justify-content: center; z-index: 100; }
+  .edit-overlay.open { display: flex; }
+  .edit-panel { background: #fff; border-radius: var(--radius-lg); padding: 2rem; width: 380px; border: 0.5px solid var(--cream-border); box-shadow: 0 8px 40px rgba(0,0,0,0.08); }
+  .edit-panel h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--forest); margin-bottom: 1.5rem; letter-spacing: 0.04em; }
+  .edit-field { margin-bottom: 1rem; }
+  .edit-field label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 5px; }
+  .edit-field input { width: 100%; padding: 9px 12px; border: 0.5px solid var(--cream-border); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .edit-field input:focus { border-color: var(--forest); background: #fff; }
+  .edit-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem; }
+  .btn-cancel { background: transparent; border: 0.5px solid var(--cream-border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 18px; border-radius: var(--radius); cursor: pointer; }
+  .btn-save { background: var(--forest); border: none; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 18px; border-radius: var(--radius); cursor: pointer; }
+  .edit-hint { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); text-align: center; margin-top: 8px; letter-spacing: 0.04em; }
+  .state-msg { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-faint); padding: 1.25rem 0; text-align: center; letter-spacing: 0.04em; }
+  .error-msg { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--red); padding: 0.5rem 0; }
+  .signin-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--forest-lighter); border: 0.5px solid rgba(30,61,47,0.2); color: var(--forest); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 16px; border-radius: var(--radius); cursor: pointer; transition: background 0.2s; margin-top: 10px; font-weight: 500; }
+  .signin-btn:hover { background: #d4e4da; }
+  .expansion-slot { background: #fff; border: 0.5px dashed var(--cream-border); border-radius: var(--radius-lg); padding: 1.375rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; gap: 6px; }
+  .expansion-slot span:first-child { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--text-faint); letter-spacing: 0.06em; }
+  .expansion-slot span:last-child { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-faint); opacity: 0.6; }
+  @media (max-width: 780px) {
+    .grid-2, .metrics-grid { grid-template-columns: 1fr; }
+    body { padding: 1.5rem 1rem; }
+    .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .header-right { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="edit-overlay" id="editOverlay">
+  <div class="edit-panel">
+    <h3>Update rentals</h3>
+    <div class="edit-field"><label>Rent collected this month ($)</label><input type="number" id="inp-rent" placeholder="e.g. 5800"></div>
+    <div class="edit-field"><label>Rent expected this month ($)</label><input type="number" id="inp-expected" placeholder="e.g. 6500"></div>
+    <div class="edit-field"><label>Portfolio cash flow this month ($)</label><input type="number" id="inp-cashflow" placeholder="e.g. 420"></div>
+    <div class="edit-field"><label>Total revolving debt ($)</label><input type="number" id="inp-debt" placeholder="e.g. 22080"></div>
+    <div class="edit-field"><label>Current mortgage FICO median</label><input type="number" id="inp-fico" placeholder="e.g. 659"></div>
+    <div class="edit-actions">
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-save" onclick="saveMetrics()">Save</button>
+    </div>
+    <p class="edit-hint">saves to your browser automatically</p>
+  </div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="brand"><h1>Blackburn</h1><p>Personal dashboard</p></div>
+    <div class="divider-v"></div>
+    <div class="date-block">
+      <div class="day" id="dayDisplay"></div>
+      <div class="full-date" id="dateDisplay"></div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div>live</div>
+    <div class="last-updated" id="lastUpdated">—</div>
+    <button class="refresh-btn" onclick="refreshAll()">↻ refresh</button>
+  </div>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('brief', this)">Daily brief</button>
+  <button class="tab-btn" onclick="switchTab('rentals', this)">Rentals</button>
+</div>
+
+<div class="tab-view active" id="tab-brief">
+  <div class="accent-strip" style="margin-bottom:1.75rem;">
+    <div class="accent-strip-left">
+      <div class="accent-strip-dot"></div>
+      <div class="accent-strip-text">FICO median</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="accent-strip-value" id="brief-fico-val">—</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint)" id="brief-fico-pts"></div>
+      <a href="https://www.myfico.com" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--forest);text-decoration:none;border:0.5px solid rgba(30,61,47,0.2);padding:3px 10px;border-radius:20px;background:var(--forest-lighter);">view myfico →</a>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">To-dos</span><span class="card-count" id="todoCount">—</span></div>
+      <div id="todoList"><div class="state-msg">loading tasks...</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">Inbox</span><span class="card-count" id="emailCount">—</span></div>
+      <div id="emailList"><div class="state-msg">sign in to load emails</div></div>
+      <div id="gmailSignin"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Today's schedule</span><span class="card-count" id="calCount">—</span></div>
+      <div id="calList"><div class="state-msg">sign in to load calendar</div></div>
+    </div>
+    <div class="expansion-slot">
+      <span>expansion slot</span>
+      <span>weather · news · avail · anything</span>
+    </div>
+  </div>
+</div>
+
+<div class="tab-view" id="tab-rentals">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:1.25rem;">
+    <button class="signin-btn" style="margin-top:0;" onclick="openEdit()">↑ update numbers</button>
+  </div>
+  <div class="metrics-grid">
+    <div class="metric-card green-tint" onclick="openEdit()">
+      <div class="metric-label">Rent collected · month</div>
+      <div class="metric-value" id="m-rent">—</div>
+      <div class="metric-sub" id="m-rent-sub">of — expected</div>
+      <div class="progress-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" id="m-rent-bar" style="width:0%"></div></div></div>
+    </div>
+    <div class="metric-card green-tint" onclick="openEdit()">
+      <div class="metric-label">Cash flow · month</div>
+      <div class="metric-value" id="m-cashflow">—</div>
+      <div class="metric-sub">portfolio net this month</div>
+    </div>
+    <div class="metric-card" onclick="openEdit()">
+      <div class="metric-label">Revolving debt</div>
+      <div class="metric-value" id="m-debt">—</div>
+      <div class="metric-sub">total balance across all cards</div>
+    </div>
+    <a class="metric-card fico-link" href="https://www.myfico.com" target="_blank">
+      <div class="metric-label">Mortgage FICO median</div>
+      <div class="metric-value" id="m-fico">—</div>
+      <div class="metric-sub" id="m-fico-sub">target: 700</div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="m-fico-bar" style="width:0%"></div></div>
+        <div class="progress-label"><span id="m-fico-lo">580</span><span>700</span></div>
+      </div>
+      <div class="fico-link-row"><span class="fico-link-label">open myfico</span><span class="fico-arrow">→</span></div>
+    </a>
+  </div>
+  <div class="accent-strip">
+    <div class="accent-strip-left">
+      <div class="accent-strip-dot"></div>
+      <div class="accent-strip-text">portfolio refi goal — 5 properties · Blackburn Real Estate LLC</div>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint);">hit 700 → contact Ian</div>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const CONFIG = {
+  ANTHROPIC_API_KEY: "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",
+  TODOIST_TOKEN:     "53ddc6049032d5590dfa7b889371b087b9532020",
+  GOOGLE_CLIENT_ID:  "840089482266-nk0u69kbl785vbsoi5ea84dlku4ludan.apps.googleusercontent.com",
+};
+
+const REFRESH_MS = 5 * 60 * 1000;
+let gmailToken = null;
+let tokenClient = null;
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+function loadMetrics() {
+  const rent=parseFloat(localStorage.getItem('m-rent')||'0');
+  const expected=parseFloat(localStorage.getItem('m-expected')||'0');
+  const cashflow=parseFloat(localStorage.getItem('m-cashflow')||'0');
+  const debt=parseFloat(localStorage.getItem('m-debt')||'0');
+  const fico=parseFloat(localStorage.getItem('m-fico')||'0');
+  const fmt=n=>n>0?'$'+n.toLocaleString():'—';
+  const pct=(a,b)=>b>0?Math.min(100,Math.round(a/b*100)):0;
+  document.getElementById('m-rent').textContent=fmt(rent);
+  document.getElementById('m-rent-sub').textContent=expected>0?`of ${fmt(expected)} expected`:'of — expected';
+  document.getElementById('m-rent-bar').style.width=pct(rent,expected)+'%';
+  const cfEl=document.getElementById('m-cashflow');
+  cfEl.textContent=cashflow!==0?(cashflow>=0?'+$':'−$')+Math.abs(cashflow).toLocaleString():'—';
+  cfEl.style.color=cashflow<0?'var(--red)':'var(--forest)';
+  document.getElementById('m-debt').textContent=fmt(debt);
+  if(fico>0){
+    const base=580,target=700;
+    const progress=Math.max(0,Math.min(100,Math.round((fico-base)/(target-base)*100)));
+    document.getElementById('m-fico').textContent=fico;
+    const pts=target-fico;
+    document.getElementById('m-fico-sub').textContent=fico>=target?'✓ target reached':`${pts} pts to go`;
+    document.getElementById('m-fico-bar').style.width=progress+'%';
+    document.getElementById('m-fico-lo').textContent=String(base);
+    document.getElementById('brief-fico-val').textContent=fico;
+    document.getElementById('brief-fico-pts').textContent=fico>=target?'✓ target reached':`${pts} pts to 700`;
+  }
+}
+
+function openEdit(){
+  document.getElementById('inp-rent').value=localStorage.getItem('m-rent')||'';
+  document.getElementById('inp-expected').value=localStorage.getItem('m-expected')||'';
+  document.getElementById('inp-cashflow').value=localStorage.getItem('m-cashflow')||'';
+  document.getElementById('inp-debt').value=localStorage.getItem('m-debt')||'';
+  document.getElementById('inp-fico').value=localStorage.getItem('m-fico')||'';
+  document.getElementById('editOverlay').classList.add('open');
+}
+function closeEdit(){document.getElementById('editOverlay').classList.remove('open');}
+function saveMetrics(){
+  ['rent','expected','cashflow','debt','fico'].forEach(k=>{
+    localStorage.setItem('m-'+k,document.getElementById('inp-'+k).value);
+  });
+  closeEdit();loadMetrics();
+}
+document.getElementById('editOverlay').addEventListener('click',function(e){if(e.target===this)closeEdit();});
+
+function updateDate(){
+  const now=new Date();
+  const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById('dayDisplay').textContent=days[now.getDay()];
+  document.getElementById('dateDisplay').textContent=`${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+  document.getElementById('lastUpdated').textContent=`updated ${now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
+}
+
+async function loadTodos(){
+  const el=document.getElementById('todoList');
+  const countEl=document.getElementById('todoCount');
+  el.innerHTML='<div class="state-msg">loading...</div>';
+  try{
+    const res=await fetch('https://api.todoist.com/rest/v2/tasks',{headers:{Authorization:`Bearer ${CONFIG.TODOIST_TOKEN}`}});
+    if(!res.ok)throw new Error('auth');
+    const tasks=await res.json();
+    const today=new Date().toISOString().split('T')[0];
+    const relevant=tasks.filter(t=>!t.due?t.priority>=3:t.due.date<=today).sort((a,b)=>b.priority-a.priority).slice(0,8);
+    countEl.textContent=`${relevant.length} open`;
+    if(!relevant.length){el.innerHTML='<div class="state-msg">all clear ✓</div>';return;}
+    el.innerHTML=relevant.map(t=>{
+      const over=t.due&&t.due.date<today;
+      const due=t.due?(over?`overdue · ${t.due.date}`:`due ${t.due.date}`):'no due date';
+      return `<div class="todo-item"><div class="priority-dot p-${t.priority}"></div><div><div class="todo-text">${esc(t.content)}</div><div class="todo-meta${over?' overdue':''}">${due}</div></div></div>`;
+    }).join('');
+  }catch(e){el.innerHTML=`<div class="error-msg">couldn't load todos — check Todoist token</div>`;countEl.textContent='—';}
+}
+
+function initGoogle(){
+  if(!window.google){setTimeout(initGoogle,500);return;}
+  tokenClient=google.accounts.oauth2.initTokenClient({
+    client_id:CONFIG.GOOGLE_CLIENT_ID,
+    scope:'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly',
+    callback:async(resp)=>{
+      if(resp.access_token){
+        gmailToken=resp.access_token;
+        document.getElementById('gmailSignin').innerHTML='';
+        await loadEmails();await loadCalendar();
+      }
+    }
+  });
+  document.getElementById('gmailSignin').innerHTML=`<button class="signin-btn" onclick="tokenClient.requestAccessToken()">Sign in with Google</button>`;
+}
+
+async function loadEmails(){
+  const el=document.getElementById('emailList');
+  const countEl=document.getElementById('emailCount');
+  if(!gmailToken)return;
+  el.innerHTML='<div class="state-msg">fetching emails...</div>';
+  try{
+    const listRes=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=20&q=is:unread',{headers:{Authorization:`Bearer ${gmailToken}`}});
+    const listData=await listRes.json();
+    const messages=listData.messages||[];
+    countEl.textContent=`${messages.length} unread`;
+    if(!messages.length){el.innerHTML='<div class="state-msg">inbox zero ✓</div>';return;}
+    el.innerHTML='<div class="state-msg">summarizing with claude...</div>';
+    const details=await Promise.all(messages.slice(0,10).map(async m=>{
+      const r=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject`,{headers:{Authorization:`Bearer ${gmailToken}`}});
+      const d=await r.json();const h=d.payload.headers;
+      return{from:cleanFrom(h.find(x=>x.name==='From')?.value||'Unknown'),subject:h.find(x=>x.name==='Subject')?.value||'(no subject)',snippet:d.snippet||''};
+    }));
+    const emailBlock=details.map((e,i)=>`[${i+1}] From: ${e.from}\nSubject: ${e.subject}\nSnippet: ${e.snippet}`).join('\n\n');
+    const claudeRes=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':CONFIG.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`You summarize emails for a personal dashboard for Ethan Blackburn — W2 employee at The David Allen Company and owner of Blackburn Real Estate LLC (6 rental properties). Return a JSON array only, no markdown. Each object: "from", "subject", "summary" (one plain sentence), "mentionsMe" (true if directly addresses Ethan or needs his specific action), "actionNeeded" (true if response or action required), "urgent" (true if time-sensitive).`,
+        messages:[{role:'user',content:emailBlock}]
+      })
+    });
+    const cd=await claudeRes.json();
+    const summaries=JSON.parse(cd.content[0].text);
+    el.innerHTML=summaries.map(e=>{
+      const tags=[];
+      if(e.mentionsMe)tags.push(`<span class="tag tag-you">mentions you</span>`);
+      if(e.urgent)tags.push(`<span class="tag tag-urgent">urgent</span>`);
+      if(e.actionNeeded)tags.push(`<span class="tag tag-action">action needed</span>`);
+      if(!e.mentionsMe&&!e.actionNeeded)tags.push(`<span class="tag tag-fyi">fyi</span>`);
+      return `<div class="email-item"><div class="email-from">${esc(e.from)}</div><div class="email-subject">${esc(e.subject)}</div><div class="email-summary">${esc(e.summary)}</div><div class="email-tags">${tags.join('')}</div></div>`;
+    }).join('');
+  }catch(err){el.innerHTML=`<div class="error-msg">error loading emails — ${esc(err.message)}</div>`;}
+}
+
+async function loadCalendar(){
+  const el=document.getElementById('calList');
+  const countEl=document.getElementById('calCount');
+  if(!gmailToken)return;
+  el.innerHTML='<div class="state-msg">loading...</div>';
+  try{
+    const now=new Date();
+    const start=new Date(now.getFullYear(),now.getMonth(),now.getDate()).toISOString();
+    const end=new Date(now.getFullYear(),now.getMonth(),now.getDate(),23,59,59).toISOString();
+    const res=await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${start}&timeMax=${end}&singleEvents=true&orderBy=startTime`,{headers:{Authorization:`Bearer ${gmailToken}`}});
+    const data=await res.json();
+    const events=data.items||[];
+    countEl.textContent=`${events.length} event${events.length!==1?'s':''}`;
+    if(!events.length){el.innerHTML='<div class="state-msg">nothing scheduled today</div>';return;}
+    const colors=['var(--forest)','#4a7fb5','var(--amber)','#6b8e6b'];
+    el.innerHTML=events.map((ev,i)=>{
+      const st=ev.start.dateTime?new Date(ev.start.dateTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'all day';
+      const loc=ev.location?` · ${ev.location.split(',')[0]}`:'';
+      const dur=ev.start.dateTime&&ev.end.dateTime?` · ${Math.round((new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/60000)}m`:'';
+      return `<div class="cal-item"><div class="cal-time">${st}</div><div class="cal-accent" style="background:${colors[i%colors.length]}"></div><div><div class="cal-title">${esc(ev.summary||'Untitled')}</div><div class="cal-sub">${dur}${loc}</div></div></div>`;
+    }).join('');
+  }catch(err){el.innerHTML=`<div class="error-msg">couldn't load calendar</div>`;}
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cleanFrom(from){const m=from.match(/^"?([^"<]+)"?\s*</);return m?m[1].trim():from.replace(/<.*>/,'').trim();}
+
+async function refreshAll(){updateDate();loadMetrics();await loadTodos();if(gmailToken){await loadEmails();await loadCalendar();}}
+
+updateDate();loadMetrics();loadTodos();
+window.addEventListener('load',initGoogle);
+setInterval(refreshAll,REFRESH_MS);
+</script>
+</body>
+</html>
