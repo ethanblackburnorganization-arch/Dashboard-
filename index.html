@@ -844,8 +844,8 @@
 <div class="live-badge">
 <div class="live-dot">
 </div>live</div>
-<div class="last-updated" id="lastUpdated">‚Äî</div>
-<button class="refresh-btn" onclick="refreshAll()">‚Üª refresh</button>
+<div class="last-updated" id="lastUpdated">—</div>
+<button class="refresh-btn" onclick="refreshAll()">↻ refresh</button>
 </div>
 </div>
 <div class="tab-bar">
@@ -860,17 +860,17 @@
 <div class="accent-strip-text">FICO median</div>
 </div>
 <div style="display:flex;align-items:center;gap:14px;">
-<div class="accent-strip-value" id="brief-fico-val">‚Äî</div>
+<div class="accent-strip-value" id="brief-fico-val">—</div>
 <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint)" id="brief-fico-pts">
 </div>
-<a href="https://www.myfico.com" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--forest);text-decoration:none;border:0.5px solid rgba(30,61,47,0.2);padding:3px 10px;border-radius:20px;background:var(--forest-lighter);">view myfico ‚Üí</a>
+<a href="https://www.myfico.com" target="_blank" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--forest);text-decoration:none;border:0.5px solid rgba(30,61,47,0.2);padding:3px 10px;border-radius:20px;background:var(--forest-lighter);">view myfico →</a>
 </div>
 </div>
 <div class="grid-2">
 <div class="card">
 <div class="card-header">
 <span class="card-title">To-dos</span>
-<span class="card-count" id="todoCount">‚Äî</span>
+<span class="card-count" id="todoCount">—</span>
 </div>
 <div id="todoList">
 <div class="state-msg">loading tasks...</div>
@@ -879,7 +879,7 @@
 <div class="card">
 <div class="card-header">
 <span class="card-title">Inbox</span>
-<span class="card-count" id="emailCount">‚Äî</span>
+<span class="card-count" id="emailCount">—</span>
 </div>
 <div id="emailList">
 <div class="state-msg">sign in to load emails</div>
@@ -892,7 +892,7 @@
 <div class="card">
 <div class="card-header">
 <span class="card-title">Today's schedule</span>
-<span class="card-count" id="calCount">‚Äî</span>
+<span class="card-count" id="calCount">—</span>
 </div>
 <div id="calList">
 <div class="state-msg">sign in to load calendar</div>
@@ -900,19 +900,19 @@
 </div>
 <div class="expansion-slot">
 <span>expansion slot</span>
-<span>weather ¬∑ news ¬∑ avail ¬∑ anything</span>
+<span>weather · news · avail · anything</span>
 </div>
 </div>
 </div>
 <div class="tab-view" id="tab-rentals">
 <div style="display:flex;justify-content:flex-end;margin-bottom:1.25rem;">
-<button class="signin-btn" style="margin-top:0;" onclick="openEdit()">‚Üë update numbers</button>
+<button class="signin-btn" style="margin-top:0;" onclick="openEdit()">↑ update numbers</button>
 </div>
 <div class="metrics-grid">
 <div class="metric-card green-tint" onclick="openEdit()">
-<div class="metric-label">Rent collected ¬∑ month</div>
-<div class="metric-value" id="m-rent">‚Äî</div>
-<div class="metric-sub" id="m-rent-sub">of ‚Äî expected</div>
+<div class="metric-label">Rent collected · month</div>
+<div class="metric-value" id="m-rent">—</div>
+<div class="metric-sub" id="m-rent-sub">of — expected</div>
 <div class="progress-wrap">
 <div class="progress-bar-bg">
 <div class="progress-bar-fill" id="m-rent-bar" style="width:0%">
@@ -921,18 +921,18 @@
 </div>
 </div>
 <div class="metric-card green-tint" onclick="openEdit()">
-<div class="metric-label">Cash flow ¬∑ month</div>
-<div class="metric-value" id="m-cashflow">‚Äî</div>
+<div class="metric-label">Cash flow · month</div>
+<div class="metric-value" id="m-cashflow">—</div>
 <div class="metric-sub">portfolio net this month</div>
 </div>
 <div class="metric-card" onclick="openEdit()">
 <div class="metric-label">Revolving debt</div>
-<div class="metric-value" id="m-debt">‚Äî</div>
+<div class="metric-value" id="m-debt">—</div>
 <div class="metric-sub">total balance across all cards</div>
 </div>
 <a class="metric-card fico-link" href="https://www.myfico.com" target="_blank">
 <div class="metric-label">Mortgage FICO median</div>
-<div class="metric-value" id="m-fico">‚Äî</div>
+<div class="metric-value" id="m-fico">—</div>
 <div class="metric-sub" id="m-fico-sub">target: 700</div>
 <div class="progress-wrap">
 <div class="progress-bar-bg">
@@ -946,7 +946,7 @@
 </div>
 <div class="fico-link-row">
 <span class="fico-link-label">open myfico</span>
-<span class="fico-arrow">‚Üí</span>
+<span class="fico-arrow">→</span>
 </div>
 </a>
 </div>
@@ -954,9 +954,9 @@
 <div class="accent-strip-left">
 <div class="accent-strip-dot">
 </div>
-<div class="accent-strip-text">portfolio refi goal ‚Äî 5 properties ¬∑ Blackburn Real Estate LLC</div>
+<div class="accent-strip-text">portfolio refi goal — 5 properties · Blackburn Real Estate LLC</div>
 </div>
-<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint);">hit 700 ‚Üí contact Ian</div>
+<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint);">hit 700 → contact Ian</div>
 </div>
 </div> <script src="https://accounts.google.com/gsi/client" async defer></script> <script>
 const CONFIG = { get ANTHROPIC_API_KEY() {
@@ -976,23 +976,23 @@ const expected=parseFloat(localStorage.getItem('m-expected')||'0');
 const cashflow=parseFloat(localStorage.getItem('m-cashflow')||'0');
 const debt=parseFloat(localStorage.getItem('m-debt')||'0');
 const fico=parseFloat(localStorage.getItem('m-fico')||'0');
-const fmt=n=>n>0?'$'+n.toLocaleString():'‚Äî';
+const fmt=n=>n>0?'$'+n.toLocaleString():'—';
 const pct=(a,b)=>b>0?Math.min(100,Math.round(a/b*100)):0;
 document.getElementById('m-rent').textContent=fmt(rent);
-document.getElementById('m-rent-sub').textContent=expected>0?`of ${fmt(expected)} expected`:'of ‚Äî expected';
+document.getElementById('m-rent-sub').textContent=expected>0?`of ${fmt(expected)} expected`:'of — expected';
 document.getElementById('m-rent-bar').style.width=pct(rent,expected)+'%';
-const cfEl=document.getElementById('m-cashflow'); cfEl.textContent=cashflow!==0?(cashflow>=0?'+$':'‚àí$')+Math.abs(cashflow).toLocaleString():'‚Äî'; cfEl.style.color=cashflow<0?'var(--red)':'var(--forest)';
+const cfEl=document.getElementById('m-cashflow'); cfEl.textContent=cashflow!==0?(cashflow>=0?'+$':'−$')+Math.abs(cashflow).toLocaleString():'—'; cfEl.style.color=cashflow<0?'var(--red)':'var(--forest)';
 document.getElementById('m-debt').textContent=fmt(debt);
 if(fico>0){
 const base=580,target=700;
 const progress=Math.max(0,Math.min(100,Math.round((fico-base)/(target-base)*100)));
 document.getElementById('m-fico').textContent=fico;
 const pts=target-fico;
-document.getElementById('m-fico-sub').textContent=fico>=target?'‚úì target reached':`${pts} pts to go`;
+document.getElementById('m-fico-sub').textContent=fico>=target?'✓ target reached':`${pts} pts to go`;
 document.getElementById('m-fico-bar').style.width=progress+'%';
 document.getElementById('m-fico-lo').textContent=String(base);
 document.getElementById('brief-fico-val').textContent=fico;
-document.getElementById('brief-fico-pts').textContent=fico>=target?'‚úì target reached':`${pts} pts to 700`; } }
+document.getElementById('brief-fico-pts').textContent=fico>=target?'✓ target reached':`${pts} pts to 700`; } }
 function openEdit(){
 document.getElementById('inp-rent').value=localStorage.getItem('m-rent')||'';
 document.getElementById('inp-expected').value=localStorage.getItem('m-expected')||'';
@@ -1036,14 +1036,14 @@ const today=new Date().toISOString().split('T')[0];
 const relevant=tasks.filter(t=>!t.due?t.priority>=3:t.due.date<=today).sort((a,b)=>b.priority-a.priority).slice(0,8);
 countEl.textContent=`${relevant.length} open`;
 if(!relevant.length){
-el.innerHTML='<div class="state-msg">all clear ‚úì</div>';return;}
+el.innerHTML='<div class="state-msg">all clear ✓</div>';return;}
 el.innerHTML=relevant.map(t=>{
 const over=t.due&&t.due.date<today;
-const due=t.due?(over?`overdue ¬∑ ${t.due.date}`:`due ${t.due.date}`):'no due date';
+const due=t.due?(over?`overdue · ${t.due.date}`:`due ${t.due.date}`):'no due date';
 return `<div class="todo-item"><div class="priority-dot p-${t.priority}"></div><div><div class="todo-text">${esc(t.content)}</div><div class="todo-meta${over?' overdue':''}">${due}</div></div></div>`; }).join(''); }
 catch(e){
-el.innerHTML=`<div class="error-msg">couldn't load todos ‚Äî check Todoist token</div>`;
-countEl.textContent='‚Äî';} }
+el.innerHTML=`<div class="error-msg">couldn't load todos — check Todoist token</div>`;
+countEl.textContent='—';} }
 function initGoogle(){
 if(!window.google){setTimeout(initGoogle,500);return;} tokenClient=google.accounts.oauth2.initTokenClient({ client_id:CONFIG.GOOGLE_CLIENT_ID, scope:'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar.readonly', callback:async(resp)=>{
 if(resp.access_token){ gmailToken=resp.access_token;
@@ -1060,15 +1060,18 @@ const listData=await listRes.json();
 const messages=listData.messages||[];
 countEl.textContent=`${messages.length} unread`;
 if(!messages.length){
-el.innerHTML='<div class="state-msg">inbox zero ‚úì</div>';return;}
-el.innerHTML='<div class="state-msg">summarizing with claude...</div>';
+el.innerHTML='<div class="state-msg">inbox zero ✓</div>';return;}
 const details=await Promise.all(messages.slice(0,10).map(async m=>{
 const r=await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${m.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject`,{headers:{Authorization:`Bearer ${gmailToken}`}});
 const d=await r.json();
 const h=d.payload.headers; return{from:cleanFrom(h.find(x=>x.name==='From')?.value||'Unknown'),subject:h.find(x=>x.name==='Subject')?.value||'(no subject)',snippet:d.snippet||''}; }));
+if(!CONFIG.ANTHROPIC_API_KEY){
+el.innerHTML=details.map(e=>`<div class="email-item"><div class="email-from">${esc(e.from)}</div><div class="email-subject">${esc(e.subject)}</div><div class="email-summary">${esc(e.snippet)}</div></div>`).join('');return;}
+el.innerHTML='<div class="state-msg">summarizing with claude...</div>';
 const emailBlock=details.map((e,i)=>`[${i+1}] From: ${e.from}\nSubject: ${e.subject}\nSnippet: ${e.snippet}`).join('\n\n');
-const claudeRes=await fetch('https://api.anthropic.com/v1/messages',{ method:'POST', headers:{'Content-Type':'application/json','x-api-key':CONFIG.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514',max_tokens:1000, system:`You summarize emails for a personal dashboard for Ethan Blackburn ‚Äî W2 employee at The David Allen Company and owner of Blackburn Real Estate LLC (6 rental properties). Return a JSON array only, no markdown. Each object: "from", "subject", "summary" (one plain sentence), "mentionsMe" (true if directly addresses Ethan or needs his specific action), "actionNeeded" (true if response or action required), "urgent" (true if time-sensitive).`, messages:[{role:'user',content:emailBlock}] }) });
+const claudeRes=await fetch('https://api.anthropic.com/v1/messages',{ method:'POST', headers:{'Content-Type':'application/json','x-api-key':CONFIG.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514',max_tokens:1000, system:`You summarize emails for a personal dashboard for Ethan Blackburn — W2 employee at The David Allen Company and owner of Blackburn Real Estate LLC (6 rental properties). Return a JSON array only, no markdown. Each object: "from", "subject", "summary" (one plain sentence), "mentionsMe" (true if directly addresses Ethan or needs his specific action), "actionNeeded" (true if response or action required), "urgent" (true if time-sensitive).`, messages:[{role:'user',content:emailBlock}] }) });
 const cd=await claudeRes.json();
+if(!cd.content||!cd.content[0]){throw new Error(cd.error?.message||'Claude API error - check your API key');}
 const summaries=JSON.parse(cd.content[0].text);
 el.innerHTML=summaries.map(e=>{
 const tags=[];
@@ -1078,7 +1081,7 @@ if(e.actionNeeded)tags.push(`<span class="tag tag-action">action needed</span>`)
 if(!e.mentionsMe&&!e.actionNeeded)tags.push(`<span class="tag tag-fyi">fyi</span>`);
 return `<div class="email-item"><div class="email-from">${esc(e.from)}</div><div class="email-subject">${esc(e.subject)}</div><div class="email-summary">${esc(e.summary)}</div><div class="email-tags">${tags.join('')}</div></div>`; }).join(''); }
 catch(err){
-el.innerHTML=`<div class="error-msg">error loading emails ‚Äî ${esc(err.message)}</div>`;} }
+el.innerHTML=`<div class="error-msg">error loading emails — ${esc(err.message)}</div>`;} }
 async function loadCalendar(){
 const el=document.getElementById('calList');
 const countEl=document.getElementById('calCount');
@@ -1097,8 +1100,8 @@ el.innerHTML='<div class="state-msg">nothing scheduled today</div>';return;}
 const colors=['var(--forest)','#4a7fb5','var(--amber)','#6b8e6b'];
 el.innerHTML=events.map((ev,i)=>{
 const st=ev.start.dateTime?new Date(ev.start.dateTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'all day';
-const loc=ev.location?` ¬∑ ${ev.location.split(',')[0]}`:'';
-const dur=ev.start.dateTime&&ev.end.dateTime?` ¬∑ ${Math.round((new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/60000)}m`:'';
+const loc=ev.location?` · ${ev.location.split(',')[0]}`:'';
+const dur=ev.start.dateTime&&ev.end.dateTime?` · ${Math.round((new Date(ev.end.dateTime)-new Date(ev.start.dateTime))/60000)}m`:'';
 return `<div class="cal-item"><div class="cal-time">${st}</div><div class="cal-accent" style="background:${colors[i%colors.length]}"></div><div><div class="cal-title">${esc(ev.summary||'Untitled')}</div><div class="cal-sub">${dur}${loc}</div></div></div>`; }).join(''); }
 catch(err){
 el.innerHTML=`<div class="error-msg">couldn't load calendar</div>`;} }
